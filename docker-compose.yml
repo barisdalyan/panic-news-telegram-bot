@@ -1,0 +1,31 @@
+version: '2.4'
+services:
+  panic-news-telegram-bot:
+    container_name: panic-news-telegram-bot
+    build: .
+    ports:
+      - 3000:3000
+    networks:
+      - mongo-network
+    depends_on:
+      - mongodb
+    restart: always
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME:
+      MONGO_INITDB_ROOT_PASSWORD:
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - mongo-network
+volumes:
+  mongodb-data:
+    driver: local
+networks:
+  mongo-network:
+    name: mongo-network
+    driver: bridge
